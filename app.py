@@ -17,15 +17,14 @@ db_name = os.getenv('db_name')
 db_table1 = 'coletados'
 db_table2 = 'CPF_OI'
 
-print(db_server)
-print(db_username)
-print(db_password)
-print(db_name)
+# Verificar se as variáveis de ambiente foram carregadas corretamente
+if not all([db_server, db_username, db_password, db_name]):
+    print("Erro: Falta de configuração no arquivo .env")
+    exit(1)
 
 # Conexão com o SQL Server
 conn = pyodbc.connect(f'DRIVER={{ODBC Driver 17 for SQL Server}};SERVER={db_server};DATABASE={db_name};UID={db_username};PWD={db_password}')
 cursor = conn.cursor()
-print(conn)
 
 def coletar(cpf_value):
     driver = webdriver.Firefox()  # Configuração do driver
@@ -96,4 +95,5 @@ def numeros_cpf():
         cursor.close()
         conn.close()  # Fecha a conexão com o banco de dados
 
+# Chamar a função para iniciar a coleta
 # numeros_cpf()
